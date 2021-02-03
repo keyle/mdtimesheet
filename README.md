@@ -1,4 +1,4 @@
-# mdtimesheet  [![Build Status](https://github.com/keyle/mdtimesheet/workflows/Go/badge.svg)]
+## mdtimesheet  ![Build Status](https://github.com/keyle/mdtimesheet/workflows/Go/badge.svg)
 
 `mdtimesheet` calculates time spent on projects, based on a markdown `plan` style file.
 
