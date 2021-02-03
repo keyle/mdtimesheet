@@ -114,5 +114,3 @@ func parseLine(l string) int {
 	}
 	return adjusted
 }
-
-
