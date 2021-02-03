@@ -2,7 +2,7 @@
 
 `mdtimesheet` calculates time spent on projects, based on a markdown `plan` style file.
 
-Consider the following format for recording done work and TODO in a markdown file:
+Consider the following format for recording DONE work and TODO in a markdown file:
 
 ```
 [...]
