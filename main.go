@@ -15,6 +15,8 @@ import (
 const considerLineStartingWith = "###"
 const ignoreTag = "@"
 
+var re = regexp.MustCompile(`^(\d{4})-(\d{2})-(\d{2})-(\w{3}) :(\d{4})-(\d{4})(-(\d+)m)?$`)
+
 func main() {
 	args := os.Args[1:]
 	if args == nil || len(args) == 0 || len(args) > 1 {
@@ -59,8 +61,6 @@ func readFile(path string) string {
 	return string(bytes)
 }
 
-var re = regexp.MustCompile(`^(\d{4})-(\d{2})-(\d{2})-(\w{3}) :(\d{4})-(\d{4})(-(\d+)m)?$`)
-
 func parseLine(l string) int {
 	fmt.Println("\n" + l)
 	res := re.FindAllStringSubmatch(l, -1)
@@ -68,30 +68,35 @@ func parseLine(l string) int {
 		color.Set(color.FgHiRed)
 		fmt.Println("\tWARN problem parsing line:", l)
 		color.Unset()
+		return 0
 	}
 	if res == nil || res[0] == nil {
 		color.Set(color.FgHiRed)
-		fmt.Println("\tWARN Bad Line")
+		fmt.Println("\tWARN Bad Line", res)
 		color.Unset()
 		return 0
 	}
 	info := res[0]
 	if len(info) == 0 {
 		color.Set(color.FgHiRed)
-		fmt.Println("\tWARN Bad Line")
+		fmt.Println("\tWARN Bad Line Info", res)
 		color.Unset()
 		return 0
 	}
 
-	t1, err1 := time.Parse("2006-01-02 15:04", info[1]+"-"+info[2]+"-"+info[3]+" "+info[5][:2]+":"+info[5][2:4])
-	t2, err2 := time.Parse("2006-01-02 15:04", info[1]+"-"+info[2]+"-"+info[3]+" "+info[6][:2]+":"+info[6][2:4])
-	if err1 != nil {
-		fmt.Println(err1)
-		os.Exit(1)
+	t1, terr1 := time.Parse("2006-01-02 15:04", info[1]+"-"+info[2]+"-"+info[3]+" "+info[5][:2]+":"+info[5][2:4])
+	t2, terr2 := time.Parse("2006-01-02 15:04", info[1]+"-"+info[2]+"-"+info[3]+" "+info[6][:2]+":"+info[6][2:4])
+	if terr1 != nil {
+		color.Set(color.FgHiRed)
+		fmt.Println(terr1)
+		color.Unset()
+		return 0
 	}
-	if err2 != nil {
-		fmt.Println(err2)
-		os.Exit(1)
+	if terr2 != nil {
+		color.Set(color.FgHiRed)
+		fmt.Println(terr2)
+		color.Unset()
+		return 0
 	}
 	diff := t2.Sub(t1)
 	breaktime, breakTimeParseErr := strconv.Atoi(info[8])
@@ -104,5 +109,10 @@ func parseLine(l string) int {
 	color.Set(color.FgHiBlack)
 	fmt.Println("\t", t1.Format("2006-01-02"), ":", diff, ":", adjusted, "minutes")
 	color.Unset()
+	if adjusted < 0 {
+		return 0
+	}
 	return adjusted
 }
+
+
