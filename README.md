@@ -73,4 +73,4 @@ Total duration spent 260h15m0s
 
 ### License
 
-MIT
+Apache 2.0
