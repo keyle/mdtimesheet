@@ -1,4 +1,4 @@
-### mdtimesheet
+## mdtimesheet
 
 `mdtimesheet` calculates time spent on projects, based on a markdown `plan` style file.
 
