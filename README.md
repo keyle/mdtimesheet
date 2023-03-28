@@ -66,7 +66,7 @@ Total duration spent 260h15m0s
 ### Build
 
 ```
-# go version go1.15.6 darwin/amd64
+# go version go1.18.3 darwin/amd64
 > go build .
 ```
 
